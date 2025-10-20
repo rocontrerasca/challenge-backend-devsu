@@ -14,6 +14,8 @@ namespace Challenge.Devsu.Application.Mappings
             CreateMap<AccountUpdateDto, Account>()
              .ForMember(dest => dest.UpdatedAt, opt => opt.MapFrom(_ => DateTime.UtcNow));
             CreateMap<Account, AccountResponseDto>().ReverseMap();
+            CreateMap<Account, AccountUpdateDto>().ReverseMap();
+            CreateMap<Account, AccountDto>().ReverseMap();
         }
     }
 }

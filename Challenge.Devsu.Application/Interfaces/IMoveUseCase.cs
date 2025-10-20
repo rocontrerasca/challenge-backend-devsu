@@ -8,7 +8,8 @@ namespace Challenge.Devsu.Application.Interfaces
     {
         Task<MoveResponseDto> CreateAsync(MoveDto requestDto);
         Task<IEnumerable<MoveResponseDto>> GetAllAsync();
-        Task<IEnumerable<MoveResponseDto>> GetByAccountId(Guid accountId);
+        Task<IEnumerable<MoveResponseDto>> GetByAccountIdAsync(Guid accountId);
         Task<MoveResponseDto> GetByIdAsync(Guid id);
+        Task<IEnumerable<MoveReportResponseDto>> GetMoveReportAsync(MoveReportDto requestDto);
     }
 }

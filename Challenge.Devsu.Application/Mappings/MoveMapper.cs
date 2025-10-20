@@ -8,8 +8,10 @@ namespace Challenge.Devsu.Application.Mappings
     {
         public MoveMapper()
         {
-            CreateMap<MoveDto, Move>().ReverseMap();
-            CreateMap<MoveResponseDto, Move>();
+            CreateMap<MoveDto, Move>()
+              .ForMember(dest => dest.TransactionDate, opt => opt.MapFrom(_ => DateTime.UtcNow));
+            CreateMap<Move, MoveDto>();
+            CreateMap<MoveResponseDto, Move>().ReverseMap();
         }
     }
 }

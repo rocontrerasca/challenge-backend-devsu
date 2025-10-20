@@ -7,7 +7,7 @@ using Challenge.Devsu.Core.Interfaces;
 
 namespace Challenge.Devsu.Application.UseCases
 {
-    public class ClientUseCase: IClientUseCase
+    public class ClientUseCase : IClientUseCase
     {
         private readonly IClientRepository _clientRepository;
         private readonly IMapper _mapper;
@@ -36,6 +36,10 @@ namespace Challenge.Devsu.Application.UseCases
             {
                 throw new BusinessRuleException("El objeto no puede ser nulo.");
             }
+            if ((await _clientRepository.FindAsync(q => q.IdentificationNumber == requestDto.IdentificationNumber)).FirstOrDefault() != null)
+            {
+                throw new ConflictException($"Ya existe un cliente con la identificación {requestDto.IdentificationNumber}");
+            }
             var entity = _mapper.Map<Client>(requestDto);
             var insertedEntity = await _clientRepository.AddAsync(entity);
             return _mapper.Map<ClientResponseDto>(insertedEntity);
@@ -54,7 +58,7 @@ namespace Challenge.Devsu.Application.UseCases
         public async Task<ClientResponseDto> DeleteByIdAsync(Guid id)
         {
             var existingEntity = (await _clientRepository.FindAsync(q => q.ClientId == id)).FirstOrDefault() ?? throw new NotFoundException("cliente", id);
-            if(existingEntity.Accounts.Count > 0) throw new BusinessRuleException("Cliente tiene cuentas relacionadas");
+            if (existingEntity.Accounts.Count > 0) throw new BusinessRuleException("Cliente tiene cuentas relacionadas");
             if (existingEntity.Accounts.Where(a => a.Movements.Count > 0).Any()) throw new BusinessRuleException("Cliente tiene cuentas relacionadas con movimientos");
             await _clientRepository.RemoveAsync(existingEntity);
             return _mapper.Map<ClientResponseDto>(existingEntity);

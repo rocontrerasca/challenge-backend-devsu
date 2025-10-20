@@ -1,4 +1,5 @@
 using Challenge.Devsu.Application.Validators;
+using Challenge.Devsu.Core.Enums;
 using System.ComponentModel.DataAnnotations;
 
 namespace Challenge.Devsu.Application.DTOs
@@ -22,6 +23,7 @@ namespace Challenge.Devsu.Application.DTOs
 
         [Required(ErrorMessage = "El género es obligatorio.")]
         [StringLength(2, ErrorMessage = "El género debe tener máximo 2 caracteres (por ejemplo: M o F).")]
+        [RegularExpression("^(M|F)$", ErrorMessage = "Género inválido. Solo M o F.")]
         public string Gender { get; set; } = string.Empty;
 
         [Required]

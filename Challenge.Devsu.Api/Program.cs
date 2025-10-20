@@ -5,6 +5,7 @@ using Challenge.Devsu.Infrastructure.Persistence.Contexts;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.OpenApi.Models;
 using System.Reflection;
+using System.Text.Json.Serialization;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -28,10 +29,11 @@ builder.Services.AddSwaggerGen(static s =>
     s.IncludeXmlComments(filePath);
 });
 
-builder.Services.AddControllers(o =>
-{
-    o.Filters.Add<Challenge.Devsu.Api.Filters.ValidationFilter>();
-});
+builder.Services
+    .AddControllers(o =>
+    {
+        o.Filters.Add<Challenge.Devsu.Api.Filters.ValidationFilter>();
+    });
 
 builder.Services.AddDbContext<DbDataContext>((serviceProvider, options) =>
 {

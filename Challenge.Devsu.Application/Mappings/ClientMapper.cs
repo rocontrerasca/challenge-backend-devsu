@@ -10,11 +10,13 @@ namespace Challenge.Devsu.Application.Mappings
         {
             CreateMap<ClientDto, Client>()
               .ForMember(dest => dest.CreatedAt, opt => opt.MapFrom(_ => DateTime.UtcNow))
-              .ForMember(dest => dest.UpdatedAt, opt => opt.MapFrom(_ => DateTime.UtcNow));
+              .ForMember(dest => dest.UpdatedAt, opt => opt.MapFrom(_ => DateTime.UtcNow))
+              .ForMember(dest => dest.Active, opt => opt.MapFrom(_ => true));
             CreateMap<Client, ClientDto>();
             CreateMap<ClientUpdateDto, Client>()
               .ForMember(dest => dest.UpdatedAt, opt => opt.MapFrom(_ => DateTime.UtcNow));
             CreateMap<Client, ClientResponseDto>();
+            CreateMap<Client, ClientUpdateDto>();
         }
     }
 }

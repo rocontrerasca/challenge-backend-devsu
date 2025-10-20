@@ -7,7 +7,7 @@ namespace Challenge.Devsu.Application.DTOs
     {
         public Guid ClientId { get; set; }
         public string FullName { get; set; } = string.Empty;
-        public PersonGender Gender { get; set; }
+        public string Gender { get; set; } = string.Empty;
         public int Age { get; set; }
         public string IdentificationNumber { get; set; } = string.Empty;
         public string Address { get; set; } = string.Empty;
@@ -19,6 +19,6 @@ namespace Challenge.Devsu.Application.DTOs
 
         public DateTime UpdatedAt { get; set; }
 
-        public ICollection<AccountDto> Accounts { get; set; } = [];
+        public ICollection<AccountResponseDto> Accounts { get; set; } = [];
     }
 }

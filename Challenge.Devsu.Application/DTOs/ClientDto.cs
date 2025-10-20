@@ -11,15 +11,13 @@ namespace Challenge.Devsu.Application.DTOs
         [StringLength(20, MinimumLength = 4, ErrorMessage = "La contraseña debe tener entre 4 y 20 caracteres.")]
         public string Password { get; set; } = string.Empty;
 
-        [Required]
-        public bool Active { get; set; }
-
         [Required(ErrorMessage = "El nombre completo es obligatorio.")]
         [StringLength(120, ErrorMessage = "El nombre completo no puede exceder los 120 caracteres.")]
         public string FullName { get; set; } = string.Empty;
 
         [Required(ErrorMessage = "El género es obligatorio.")]
         [StringLength(2, ErrorMessage = "El género debe tener máximo 2 caracteres (por ejemplo: M o F).")]
+        [RegularExpression("^(M|F)$", ErrorMessage = "Género inválido. Solo M o F.")]
         public string Gender { get; set; } = string.Empty;
 
         [Required]

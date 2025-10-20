@@ -1,6 +1,8 @@
 using Challenge.Devsu.Application.DTOs;
 using Challenge.Devsu.Application.Interfaces;
 using Challenge.Devsu.Application.UseCases;
+using Challenge.Devsu.Core.Enums;
+using Challenge.Devsu.Core.ExceptionDomain;
 using Challenge.Devsu.Shared.Helpers;
 using Microsoft.AspNetCore.Mvc;
 
@@ -41,13 +43,18 @@ namespace Challenge.Devsu.Api.Controllers
             try
             {
                 var response = await _moveUseCase.CreateAsync(dto);
-                await _logUseCase.Create(response.MoveId, "Movimiento creada exitosamente");
+                await _logUseCase.Create(response.MoveId, $"Movimiento creado exitosamente: {(response.MoveType == MoveType.Debito ? "Retiro" : "Depósito")} de {response.Amount}");
                 return ApiResponseHelper.CreateNewListSuccessResponse(HttpContext, response);
             }
             catch (Exception ex)
             {
                 _logger.LogError(ex, "Error creando movimiento");
                 await _logUseCase.Create(null, "Error al crear movimiento: " + ex.Message);
+                if (ex is DomainException de)
+                {
+                    return ApiResponseHelper.CreateDomainErrorResponse(
+                        HttpContext, de.Message, de.CodeDescription, de.Code);
+                }
                 return ApiResponseHelper.CreateInternalErrorResponse(HttpContext, $"Error interno del servidor: {ex.Message}");
             }
         }
@@ -72,12 +79,27 @@ namespace Challenge.Devsu.Api.Controllers
         {
             try
             {
-                var response = await _moveUseCase.GetByAccountId(accountId);
+                var response = await _moveUseCase.GetByAccountIdAsync(accountId);
                 return ApiResponseHelper.ReadSuccessResponse(HttpContext, response);
             }
             catch (Exception ex)
             {
                 _logger.LogError(ex, "Error consultando movimientos cuenta");
+                return ApiResponseHelper.CreateInternalErrorResponse(HttpContext, $"Error interno del servidor: {ex.Message}");
+            }
+        }
+
+        [HttpPost("report")]
+        public async Task<IActionResult> GetMoveReport(MoveReportDto requestDto)
+        {
+            try
+            {
+                var response = await _moveUseCase.GetMoveReportAsync(requestDto);
+                return ApiResponseHelper.ReadSuccessResponse(HttpContext, response);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Error consultando reporte movimientos cuenta");
                 return ApiResponseHelper.CreateInternalErrorResponse(HttpContext, $"Error interno del servidor: {ex.Message}");
             }
         }

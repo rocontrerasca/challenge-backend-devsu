@@ -6,6 +6,7 @@ using Challenge.Devsu.Core.Enums;
 using Challenge.Devsu.Core.ExceptionDomain;
 using Challenge.Devsu.Core.Interfaces;
 using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.Hosting;
 
 namespace Challenge.Devsu.Application.UseCases
 {
@@ -13,15 +14,17 @@ namespace Challenge.Devsu.Application.UseCases
     {
         private readonly IAccountRepository _accountRepository;
         private readonly IMoveRepository _moveRepository;
+        private readonly IClientRepository _clientRepository;
         private readonly IMapper _mapper;
         private readonly decimal _dailyLimit;
 
-        public MoveUseCase(IAccountRepository accountRepository, IMapper mapper, IMoveRepository moveRepository, IConfiguration cfg)
+        public MoveUseCase(IAccountRepository accountRepository, IMapper mapper, IMoveRepository moveRepository, IConfiguration cfg, IClientRepository clientRepository)
         {
             _accountRepository = accountRepository;
             _mapper = mapper;
             _moveRepository = moveRepository;
             _ = decimal.TryParse(cfg["LIMITE_DIARIO_RETIRO"], out _dailyLimit);
+            _clientRepository = clientRepository;
         }
 
         public async Task<IEnumerable<MoveResponseDto>> GetAllAsync()
@@ -46,7 +49,6 @@ namespace Challenge.Devsu.Application.UseCases
 
             try
             {
-                // 1) Cargar cuenta o lanzar NotFound (esto NO será atrapado por el catch filtrado)
                 existingAccountEntity = (await _accountRepository
                     .FindAsync(q => q.AccountId == requestDto.AccountRefId))
                     .FirstOrDefault()
@@ -55,7 +57,6 @@ namespace Challenge.Devsu.Application.UseCases
                 if (!existingAccountEntity.Active)
                     throw new BusinessRuleException("Cuenta inactiva.");
 
-                // 2) Calcular saldo actual y validar reglas
                 currentBalance = existingAccountEntity.Movements
                     .OrderByDescending(m => m.TransactionDate)
                     .Select(m => m.Balance)
@@ -80,7 +81,7 @@ namespace Challenge.Devsu.Application.UseCases
                         .Sum(m => m.Amount);
 
                     if (retirosHoy + amount > _dailyLimit)
-                        throw new BusinessRuleException("Limite diario de retiros excedido.");
+                        throw new BusinessRuleException("Cupo diario excedido.");
                 }
 
                 var newBalance = isDebit ? (currentBalance.Value - amount) : (currentBalance.Value + amount);
@@ -120,15 +121,52 @@ namespace Challenge.Devsu.Application.UseCases
                     // tape la excepción original.
                 }
 
-                throw; 
+                throw;
             }
         }
 
-        public async Task<IEnumerable<MoveResponseDto>> GetByAccountId(Guid accountId)
+        public async Task<IEnumerable<MoveResponseDto>> GetByAccountIdAsync(Guid accountId)
         {
             _ = (await _accountRepository.FindAsync(q => q.AccountId == accountId)).FirstOrDefault() ?? throw new NotFoundException("cuenta", accountId);
             var clientList = await _accountRepository.FindAsync(q => q.AccountId == accountId);
             return _mapper.Map<IEnumerable<MoveResponseDto>>(clientList);
+        }
+
+        public async Task<IEnumerable<MoveReportResponseDto>> GetMoveReportAsync(MoveReportDto requestDto)
+        {
+            _ = (await _clientRepository.FindAsync(q => q.ClientId == requestDto.ClientId)).FirstOrDefault() ?? throw new NotFoundException("cliente", requestDto.ClientId);
+            var moveList = await _moveRepository.FindAsync(m => m.Account.ClientRefId == requestDto.ClientId && m.TransactionDate >= requestDto.StartDate.Date && m.TransactionDate <= requestDto.EndDate.Date);
+
+            var result = moveList
+                        .OrderByDescending(m => m.TransactionDate)
+                        .Select(m =>
+                        {
+                            decimal initial = m.Success ? (m.MoveType == MoveType.Credito
+                                ? m.Balance - Math.Abs(m.Amount)
+                                : m.Balance + Math.Abs(m.Amount)) : m.Balance;
+
+                            string accountTypeText = m.Account.AccountType switch
+                            {
+                                AccountType.Ahorros => "Ahorros",
+                                AccountType.Corriente => "Corriente",
+                                _ => m.Account.AccountType.ToString()
+                            };
+
+                            return new MoveReportResponseDto
+                            {
+                                TransactionDate = m.TransactionDate,
+                                Client = m.Account.Client.FullName,
+                                Account = m.Account.AccountNumber,
+                                AccountType = accountTypeText,
+                                Amount = m.MoveType == MoveType.Credito ? Math.Abs(m.Amount) : -Math.Abs(m.Amount),
+                                InitialBalance = initial,
+                                Success = m.Success,
+                                FinalBalance = m.Balance
+                            };
+                        })
+                        .ToList();
+
+            return result;
         }
     }
 }

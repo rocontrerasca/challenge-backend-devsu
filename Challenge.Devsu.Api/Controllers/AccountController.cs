@@ -1,6 +1,7 @@
 using Challenge.Devsu.Application.DTOs;
 using Challenge.Devsu.Application.Interfaces;
 using Challenge.Devsu.Application.UseCases;
+using Challenge.Devsu.Core.ExceptionDomain;
 using Challenge.Devsu.Shared.Helpers;
 using Microsoft.AspNetCore.Mvc;
 
@@ -49,6 +50,11 @@ namespace Challenge.Devsu.Api.Controllers
             {
                 _logger.LogError(ex, "Error creando cuenta");
                 await _logUseCase.Create(null, "Error al crear cuenta: " + ex.Message);
+                if (ex is DomainException de)
+                {
+                    return ApiResponseHelper.CreateDomainErrorResponse(
+                        HttpContext, de.Message, de.CodeDescription, de.Code);
+                }
                 return ApiResponseHelper.CreateInternalErrorResponse(HttpContext, $"Error interno del servidor: {ex.Message}");
             }
         }
@@ -81,6 +87,11 @@ namespace Challenge.Devsu.Api.Controllers
             {
                 _logger.LogError(ex, "Error al actualizar el cliente con ID {Id}", dto.AccountId);
                 await _logUseCase.Create(dto.AccountId, "Error al actualizar cuenta: " + ex.Message);
+                if (ex is DomainException de)
+                {
+                    return ApiResponseHelper.CreateDomainErrorResponse(
+                        HttpContext, de.Message, de.CodeDescription, de.Code);
+                }
                 return ApiResponseHelper.CreateInternalErrorResponse(HttpContext, $"Error interno del servidor: {ex.Message}");
             }
         }

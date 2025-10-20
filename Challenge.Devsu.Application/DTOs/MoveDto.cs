@@ -7,8 +7,6 @@ namespace Challenge.Devsu.Application.DTOs;
 
 public class MoveDto
 {
-    public DateTime TransactionDate { get; set; } = DateTime.UtcNow;
-
     [Required(ErrorMessage = "El tipo de movimiento es obligatorio.")]
     [EnumDataType(typeof(MoveType), ErrorMessage = "Tipo de movimiento inválido.")]
     public MoveType MoveType { get; set; }

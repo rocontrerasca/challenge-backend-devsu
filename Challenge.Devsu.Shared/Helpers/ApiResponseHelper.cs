@@ -1,5 +1,7 @@
+using Challenge.Devsu.Core.ExceptionDomain;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using System.Net;
 
 namespace Challenge.Devsu.Shared.Helpers
 {
@@ -112,6 +114,23 @@ namespace Challenge.Devsu.Shared.Helpers
             };
 
             return new ObjectResult(response) { StatusCode = 500 };
+        }
+
+        public static IActionResult CreateDomainErrorResponse(HttpContext httpContext, string message, string errorCode, int code)
+        {
+            var response = new
+            {
+                Meta = GetMeta(httpContext),
+                StatusCodigo = code,
+                StatusDesc = errorCode,
+                AdicionalInfo = new[]
+            {
+                new { Codigo = errorCode, Detalle = message }
+            },
+                Data = (object)null!
+            };
+
+            return new ObjectResult(response) { StatusCode = code };
         }
     }
 }

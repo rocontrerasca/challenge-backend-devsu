@@ -1,12 +1,19 @@
+using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 using System.Text.Json;
 
 namespace Challenge.Devsu.Core.Entities
 {
     public class Log
     {
-        public Guid LogId { get; set; } 
+        [Key]
+        [Column("log_id")]
+        public long LogId { get; set; }
+        [Column("resource_id")]
         public Guid? ResourceId { get; set; }
+        [Column("message")]
         public string Message { get; set; } = string.Empty;
-        public DateTime? Date { get; set; } = DateTime.UtcNow;
+        [Column("created_at")]
+        public DateTime? CreatedAt { get; set; } = DateTime.UtcNow;
     }
 }
