@@ -9,7 +9,7 @@ public partial class Account
     public Guid AccountId { get; set; }
     public string AccountNumber { get; set; } = string.Empty;
     public AccountType AccountType { get; set; }
-    public decimal Balance { get; set; }
+    public decimal InitialBalance { get; set; }
     public bool Active { get; set; } = true;
 
     public Guid ClientRefId { get; set; }

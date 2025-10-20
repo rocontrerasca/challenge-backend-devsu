@@ -9,7 +9,7 @@ namespace Challenge.Devsu.Core.Entities
         public DateTime TransactionDate { get; set; } = DateTime.UtcNow;
         public MoveType MoveType { get; set; }
         public decimal Amount { get; set; }
-        public decimal InitialBalance { get; set; }
+        public decimal Balance { get; set; }
 
         public Guid AccountRefId { get; set; }
         public bool Success { get; set; }

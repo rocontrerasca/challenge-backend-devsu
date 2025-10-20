@@ -1,3 +1,4 @@
+using Challenge.Devsu.Application.Validators;
 using System.ComponentModel.DataAnnotations;
 
 namespace Challenge.Devsu.Application.DTOs
@@ -5,6 +6,7 @@ namespace Challenge.Devsu.Application.DTOs
     public class ClientUpdateDto
     {
         [Required(ErrorMessage = "El identificador del cliente es obligatorio para la actualización.")]
+        [NotEmptyGuid]
         public Guid ClientId { get; set; }
 
         [Required(ErrorMessage = "La contraseña es obligatoria.")]
