@@ -151,5 +151,31 @@ namespace Challenge.Devsu.Api.Controllers
                 return ApiResponse<string>.CreateResponse<string>(HttpContext, 500, null!, ex.Message);
             }
         }
+
+        /// <summary>
+        /// Generación reporte base64
+        /// </summary>
+        /// <param name="requestDto"></param>
+        /// <returns></returns>
+        [HttpPost("report/pdf")]
+        [ProducesResponseType(typeof(ApiResponse<MoveReportPdfResponseDto>), 200)]
+        [ProducesResponseType(typeof(ApiResponse<string>), 500)]
+        public async Task<IActionResult> GetMoveReportPdf(MoveReportDto requestDto)
+        {
+            try
+            {
+                var response = await _moveUseCase.GetMoveReportPdfAsync(requestDto);
+                return ApiResponse<MoveReportPdfResponseDto>.CreateResponse(HttpContext, 200, "OK", response);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Error consultando reporte movimientos cuenta");
+                if (ex is DomainException de)
+                {
+                    return ApiResponse<string>.CreateResponse<string>(HttpContext, de.Code, de.CodeDescription, de.Message);
+                }
+                return ApiResponse<string>.CreateResponse<string>(HttpContext, 500, null!, ex.Message);
+            }
+        }
     }
 }

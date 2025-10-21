@@ -161,15 +161,15 @@ namespace Challenge.Devsu.Api.Controllers
         /// </summary>
         /// <param name="clientId"></param>
         /// <returns></returns>
-        [HttpGet("client/{id:guid}")]
-        [ProducesResponseType(typeof(ApiResponse<AccountResponseDto>), 200)]
+        [HttpGet("client/{clientId:guid}")]
+        [ProducesResponseType(typeof(ApiResponse<IEnumerable<AccountResponseDto>>), 200)]
         [ProducesResponseType(typeof(ApiResponse<string>), 500)]
         public async Task<IActionResult> GetByClientId(Guid clientId)
         {
             try
             {
                 var response = await _accountUseCase.GetByClientId(clientId);
-                return ApiResponse<AccountResponseDto>.CreateResponse(HttpContext, 200, "OK", response);
+                return ApiResponse<IEnumerable<AccountResponseDto>>.CreateResponse(HttpContext, 200, "OK", response);
             }
             catch (Exception ex)
             {

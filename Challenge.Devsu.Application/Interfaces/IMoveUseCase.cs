@@ -11,5 +11,6 @@ namespace Challenge.Devsu.Application.Interfaces
         Task<IEnumerable<MoveResponseDto>> GetByAccountIdAsync(Guid accountId);
         Task<MoveResponseDto> GetByIdAsync(Guid id);
         Task<IEnumerable<MoveReportResponseDto>> GetMoveReportAsync(MoveReportDto requestDto);
+        Task<MoveReportPdfResponseDto> GetMoveReportPdfAsync(MoveReportDto requestDto);
     }
 }

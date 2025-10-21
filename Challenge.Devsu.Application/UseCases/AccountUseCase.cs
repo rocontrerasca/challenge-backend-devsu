@@ -49,7 +49,7 @@ namespace Challenge.Devsu.Application.UseCases
                 throw new BusinessRuleException("El objeto no puede ser nulo.");
 
             var existingEntity = (await _accountRepository.FindAsync(q => q.AccountId == requestDto.AccountId)).FirstOrDefault() ?? throw new NotFoundException("cuenta", requestDto.AccountId);
-            _mapper.Map(requestDto, existingEntity);
+            existingEntity = _mapper.Map(requestDto, existingEntity);
             await _accountRepository.UpdateAsync(existingEntity);
             return _mapper.Map<AccountUpdateDto>(existingEntity);
         }

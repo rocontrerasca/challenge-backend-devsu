@@ -1,12 +1,12 @@
-using AutoMapper;
+﻿using AutoMapper;
 using Challenge.Devsu.Application.DTOs;
 using Challenge.Devsu.Application.Interfaces;
+using Challenge.Devsu.Application.Report;
 using Challenge.Devsu.Core.Entities;
 using Challenge.Devsu.Core.Enums;
 using Challenge.Devsu.Core.ExceptionDomain;
 using Challenge.Devsu.Core.Interfaces;
 using Microsoft.Extensions.Configuration;
-using Microsoft.Extensions.Hosting;
 
 namespace Challenge.Devsu.Application.UseCases
 {
@@ -30,7 +30,7 @@ namespace Challenge.Devsu.Application.UseCases
         public async Task<IEnumerable<MoveResponseDto>> GetAllAsync()
         {
             var clientList = await _moveRepository.GetAllAsync();
-            return _mapper.Map<IEnumerable<MoveResponseDto>>(clientList);
+            return _mapper.Map<IEnumerable<MoveResponseDto>>(clientList.OrderByDescending(m => m.TransactionDate));
         }
 
         public async Task<MoveResponseDto> GetByIdAsync(Guid id)
@@ -118,7 +118,7 @@ namespace Challenge.Devsu.Application.UseCases
                 catch
                 {
                     // Evita que un error al registrar el fallo o al recalcular el saldo
-                    // tape la excepci�n original.
+                    // tape la excepción original.
                 }
 
                 throw;
@@ -135,7 +135,7 @@ namespace Challenge.Devsu.Application.UseCases
         public async Task<IEnumerable<MoveReportResponseDto>> GetMoveReportAsync(MoveReportDto requestDto)
         {
             _ = (await _clientRepository.FindAsync(q => q.ClientId == requestDto.ClientId)).FirstOrDefault() ?? throw new NotFoundException("cliente", requestDto.ClientId);
-            var moveList = await _moveRepository.FindAsync(m => m.Account.ClientRefId == requestDto.ClientId && m.TransactionDate >= requestDto.StartDate.Date && m.TransactionDate <= requestDto.EndDate.Date);
+            var moveList = await _moveRepository.FindAsync(m => m.Account.ClientRefId == requestDto.ClientId && m.TransactionDate >= requestDto.StartDate.Date && m.TransactionDate <= requestDto.EndDate);
 
             var result = moveList
                         .OrderByDescending(m => m.TransactionDate)
@@ -167,6 +167,23 @@ namespace Challenge.Devsu.Application.UseCases
                         .ToList();
 
             return result;
+        }
+
+        public async Task<MoveReportPdfResponseDto> GetMoveReportPdfAsync(MoveReportDto requestDto)
+        {
+            var data = await GetMoveReportAsync(requestDto);
+
+            var clientName = data.FirstOrDefault()?.Client ?? "Sin Cliente";
+            var pdfBytes = MoveReportPdfBuilder.Generate(data.ToList(), clientName, requestDto.StartDate, requestDto.EndDate);
+
+            // Codificar a Base64 y devolver
+            var response = new MoveReportPdfResponseDto
+            {
+                FileName = $"reporte_movimientos_{DateTime.Now:yyyyMMdd_HHmm}.pdf",
+                Base64 = Convert.ToBase64String(pdfBytes)
+            };
+
+            return response;
         }
     }
 }

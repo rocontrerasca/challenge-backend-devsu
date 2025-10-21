@@ -4,6 +4,7 @@ using Challenge.Devsu.Infrastructure.Configurations;
 using Challenge.Devsu.Infrastructure.Persistence.Contexts;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.OpenApi.Models;
+using QuestPDF.Infrastructure;
 using System.Reflection;
 using System.Text.Json.Serialization;
 
@@ -42,6 +43,7 @@ builder.Services.AddDbContext<DbDataContext>((serviceProvider, options) =>
     options.UseNpgsql(connectionString);
 });
 builder.Services.RegisterDependencies();
+QuestPDF.Settings.License = LicenseType.Community;
 var app = builder.Build();
 
 app.UseMiddleware<ExceptionMiddleware>();
