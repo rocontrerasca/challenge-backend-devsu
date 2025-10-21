@@ -27,6 +27,7 @@
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
+    <PackageReference Include="Microsoft.Extensions.Logging.Abstractions" Version="9.0.10" />
     <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
     <PackageReference Include="Npgsql" Version="8.0.6" />
     <PackageReference Include="Npgsql.EntityFrameworkCore.PostgreSQL" Version="8.0.11" />
@@ -35,7 +36,6 @@
 
   <ItemGroup>
     <ProjectReference Include="..\Challenge.Devsu.Application\Challenge.Devsu.Application.csproj" />
-    <ProjectReference Include="..\Challenge.Devsu.Common\Challenge.Devsu.Common.csproj" />
     <ProjectReference Include="..\Challenge.Devsu.Core\Challenge.Devsu.Core.csproj" />
     <ProjectReference Include="..\Challenge.Devsu.Shared\Challenge.Devsu.Shared.csproj" />
   </ItemGroup>
