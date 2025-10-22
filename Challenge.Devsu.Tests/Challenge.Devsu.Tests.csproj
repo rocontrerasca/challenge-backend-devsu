@@ -1,0 +1,62 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net8.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+
+    <IsPackable>false</IsPackable>
+    <IsTestProject>true</IsTestProject>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Compile Remove="IntegrationTests\**" />
+    <Compile Remove="Mocks\**" />
+    <Compile Remove="UnitTests\ControllerTests\MiddlewaresTest\**" />
+    <EmbeddedResource Remove="IntegrationTests\**" />
+    <EmbeddedResource Remove="Mocks\**" />
+    <EmbeddedResource Remove="UnitTests\ControllerTests\MiddlewaresTest\**" />
+    <None Remove="IntegrationTests\**" />
+    <None Remove="Mocks\**" />
+    <None Remove="UnitTests\ControllerTests\MiddlewaresTest\**" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="coverlet.collector" Version="6.0.4">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+    </PackageReference>
+    <PackageReference Include="coverlet.msbuild" Version="6.0.4">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+    </PackageReference>
+    <PackageReference Include="FluentAssertions" Version="8.7.1" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.InMemory" Version="8.0.11" />
+    <PackageReference Include="Microsoft.Extensions.Configuration.UserSecrets" Version="6.0.1" />
+    <PackageReference Include="Microsoft.Extensions.Logging.Abstractions" Version="9.0.10" />
+    <PackageReference Include="Microsoft.NET.Test.Sdk" Version="17.8.0" />
+    <PackageReference Include="Moq" Version="4.20.72" />
+    <PackageReference Include="Moq.EntityFrameworkCore" Version="8.0.1.2" />
+    <PackageReference Include="ReportGenerator" Version="5.4.3" />
+    <PackageReference Include="xunit" Version="2.5.3" />
+    <PackageReference Include="xunit.runner.visualstudio" Version="2.5.3" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Using Include="Xunit" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Challenge.Devsu.Api\Challenge.Devsu.Api.csproj" />
+    <ProjectReference Include="..\Challenge.Devsu.Application\Challenge.Devsu.Application.csproj" />
+    <ProjectReference Include="..\Challenge.Devsu.Common\Challenge.Devsu.Common.csproj" />
+    <ProjectReference Include="..\Challenge.Devsu.Core\Challenge.Devsu.Core.csproj" />
+    <ProjectReference Include="..\Challenge.Devsu.Infrastructure\Challenge.Devsu.Infrastructure.csproj" />
+    <ProjectReference Include="..\Challenge.Devsu.Shared\Challenge.Devsu.Shared.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="UnitTests\ControllerTests\" />
+  </ItemGroup>
+
+</Project>

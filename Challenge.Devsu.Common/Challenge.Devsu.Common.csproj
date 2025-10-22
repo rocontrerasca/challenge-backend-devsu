@@ -1,0 +1,22 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net8.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Compile Remove="Constants\**" />
+    <Compile Remove="Extensions\**" />
+    <EmbeddedResource Remove="Constants\**" />
+    <EmbeddedResource Remove="Extensions\**" />
+    <None Remove="Constants\**" />
+    <None Remove="Extensions\**" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Challenge.Devsu.Core\Challenge.Devsu.Core.csproj" />
+  </ItemGroup>
+
+</Project>

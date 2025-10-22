@@ -1,0 +1,358 @@
+{
+	"info": {
+		"_postman_id": "e237089f-67f0-469b-a0d7-72be5bb1f631",
+		"name": "Challenge-banco-devsu",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "8964282"
+	},
+	"item": [
+		{
+			"name": "Clientes",
+			"item": [
+				{
+					"name": "Crear cliente",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"password\": \"ssw0rd123\",\r\n  \"active\": true,\r\n  \"fullName\": \"RICHAR CONTRERAS CARO\",\r\n  \"gender\": \"F\",\r\n  \"age\": 33,\r\n  \"identificationNumber\": \"1116791732\",\r\n  \"address\": \"TV 60 59-24 SUR\",\r\n  \"phoneNumber\": \"3192587137\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{localhost}}/client",
+							"host": [
+								"{{localhost}}"
+							],
+							"path": [
+								"client"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Actualizar cliente",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"clientId\": \"235ce8eb-7036-4c38-9de7-40594390b139\",\r\n    \"password\": \"ssw0rd123\",\r\n    \"active\": true,\r\n    \"fullName\": \"RICHAR CONTRERAS\",\r\n    \"gender\": \"F\",\r\n    \"age\": 33,\r\n    \"identificationNumber\": \"1116791732\",\r\n    \"address\": \"TV 60 59-24 SUR\",\r\n    \"phoneNumber\": \"3192587137\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{localhost}}/client",
+							"host": [
+								"{{localhost}}"
+							],
+							"path": [
+								"client"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Listar clientes",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{localhost}}/client",
+							"host": [
+								"{{localhost}}"
+							],
+							"path": [
+								"client"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Consultar cliente",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{localhost}}/client/75afb14b-5591-4814-b156-bf04470a80ae",
+							"host": [
+								"{{localhost}}"
+							],
+							"path": [
+								"client",
+								"75afb14b-5591-4814-b156-bf04470a80ae"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Eliminar cliente",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{localhost}}/client/7307e35c-2966-4268-9bef-66ebdbd889a2",
+							"host": [
+								"{{localhost}}"
+							],
+							"path": [
+								"client",
+								"7307e35c-2966-4268-9bef-66ebdbd889a2"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Cuentas",
+			"item": [
+				{
+					"name": "Crear cuenta",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"accountNumber\": \"123456780\",\r\n  \"accountType\": 1,\r\n  \"initialBalance\": 100000,\r\n  \"active\": true,\r\n  \"clientRefId\": \"7307e35c-2966-4268-9bef-66ebdbd889a2\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{localhost}}/account",
+							"host": [
+								"{{localhost}}"
+							],
+							"path": [
+								"account"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Actualizar ccuenta",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"accountId\": \"c08dd110-6aa3-4276-a7f9-a589e6c1367a\",\r\n    \"accountNumber\": \"123456798\",\r\n    \"accountType\": 2,\r\n    \"active\": true\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{localhost}}/account",
+							"host": [
+								"{{localhost}}"
+							],
+							"path": [
+								"account"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Listar cuentas",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{localhost}}/account",
+							"host": [
+								"{{localhost}}"
+							],
+							"path": [
+								"account"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Consultar cuenta",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{localhost}}/account/32b4889f-b165-4280-a618-e11dc50e5b3c",
+							"host": [
+								"{{localhost}}"
+							],
+							"path": [
+								"account",
+								"32b4889f-b165-4280-a618-e11dc50e5b3c"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Eliminar cuenta",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{localhost}}/account/32b4889f-b165-4280-a618-e11dc50e5b3c",
+							"host": [
+								"{{localhost}}"
+							],
+							"path": [
+								"account",
+								"32b4889f-b165-4280-a618-e11dc50e5b3c"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Movimientos",
+			"item": [
+				{
+					"name": "Crear movimiento",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"moveType\": 2,\r\n  \"amount\": 4000,\r\n  \"accountRefId\": \"c08dd110-6aa3-4276-a7f9-a589e6c1367a\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{localhost}}/move",
+							"host": [
+								"{{localhost}}"
+							],
+							"path": [
+								"move"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Listar movimientos",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{localhost}}/move",
+							"host": [
+								"{{localhost}}"
+							],
+							"path": [
+								"move"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Consultar movimiento",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{localhost}}/move/3af5930e-ef7c-474b-be15-bd7bb2efa695",
+							"host": [
+								"{{localhost}}"
+							],
+							"path": [
+								"move",
+								"3af5930e-ef7c-474b-be15-bd7bb2efa695"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Reporte",
+			"item": [
+				{
+					"name": "Consultar movimientos cliente",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"startDate\": \"2025-10-20T20:27:04.548Z\",\r\n  \"endDate\": \"2025-10-21T20:27:04.549Z\",\r\n  \"clientId\": \"7307e35c-2966-4268-9bef-66ebdbd889a2\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{localhost}}/move/report",
+							"host": [
+								"{{localhost}}"
+							],
+							"path": [
+								"move",
+								"report"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		}
+	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"packages": {},
+				"requests": {},
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"packages": {},
+				"requests": {},
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"key": "localhost",
+			"value": ""
+		}
+	]
+}
